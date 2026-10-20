@@ -296,12 +296,14 @@ export function Systems() {
 
 /* ---------- features bento ---------- */
 
-// Image boxes are the visible artwork (padding trimmed), placed as in the Figma at 1920px.
+// Images fill the space left under the text (so they never cover it); `pinned` keeps one absolutely placed instead.
 function Tile({
   title,
   text,
   image,
   imageClass = '',
+  place = 'items-end justify-center',
+  pinned = false,
   textClass = 'max-w-[340px]',
   className = '',
 }: {
@@ -309,11 +311,13 @@ function Tile({
   text: string
   image?: string
   imageClass?: string
+  place?: string
+  pinned?: boolean
   textClass?: string
   className?: string
 }) {
   return (
-    <article className={`relative min-h-[320px] overflow-hidden bg-paper p-6 lg:min-h-0 lg:p-7 ${className}`}>
+    <article className={`relative flex min-h-[320px] flex-col overflow-hidden bg-paper p-6 lg:min-h-0 lg:p-7 ${className}`}>
       <div className="relative z-10 flex items-start justify-between gap-4">
         <div className={textClass}>
           <strong className="block text-[14px] leading-[18px] font-semibold text-ink uppercase">{title}</strong>
@@ -321,7 +325,12 @@ function Tile({
         </div>
         <LayersMark className="h-[18px] w-5 shrink-0 text-ink" />
       </div>
-      {image && <img src={image} alt="" className={`pointer-events-none absolute ${imageClass}`} />}
+      {image && pinned && <img src={image} alt="" className={`pointer-events-none absolute ${imageClass}`} />}
+      {image && !pinned && (
+        <div className={`mt-3 flex min-h-0 flex-1 ${place}`}>
+          <img src={image} alt="" className={`max-h-full max-w-full object-contain ${imageClass}`} />
+        </div>
+      )}
     </article>
   )
 }
@@ -334,37 +343,41 @@ export function Features() {
         <div className="hatch mx-5 mt-9 grid gap-2 bg-tan p-2 [--hatch:rgb(74_72_68/0.14)] lg:mx-9 lg:grid-cols-[1fr_2fr]">
           <div className="flex flex-col gap-2">
             <Tile
-              className="lg:h-[452px]"
+              className="lg:flex-[452]"
               title="Blockchain powered"
               text="Blockchain to prevent fraud with tamper proof collateral records, while smart contracts automate approvals, margin calls and loan transfer seamlessly."
               image="/assets/cubes.webp"
-              imageClass="bottom-[49px] left-1/2 w-[384px] max-w-[90%] -translate-x-1/2"
+              place="items-center justify-center pb-6" imageClass="w-[384px]"
             />
             <Tile
-              className="lg:h-[324px]"
+              className="lg:flex-[324]"
               title="DePIN network"
               text="DePIN powered warehouse receipts, tokenized storage, real time crop data, and trustless agriculture finance."
               image="/assets/house.webp"
-              imageClass="bottom-5 left-1/2 w-[297px] max-w-[85%] -translate-x-1/2"
+              imageClass="w-[297px]"
             />
           </div>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-rows-[260px_260px_248px]">
-            <Tile title="No guarantors" text={loanCopy} textClass="max-w-[230px]" image="/assets/shield.webp" imageClass="right-[37px] bottom-[15px] h-[166px]" />
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-rows-[repeat(3,minmax(248px,auto))]">
+            <Tile title="No guarantors" text={loanCopy} image="/assets/shield.webp" place="items-end justify-end pr-2" imageClass="h-[150px]" />
             <Tile
               title="Instant approval"
               text="No waiting, no worry: our instant approval process gets you from application to approval in record time."
               image="/assets/clock.webp"
-              imageClass="right-[22px] bottom-[17px] h-[170px]"
+              place="items-end justify-end" imageClass="h-[150px]"
             />
-            <Tile title="No guarantors" text={loanCopy} image="/assets/chart.webp" imageClass="right-3 bottom-[13px] w-[187px]" />
-            <Tile title="Social impact" text={loanCopy} image="/assets/people.webp" imageClass="bottom-0 left-1/2 w-[268px] max-w-[80%] -translate-x-1/2" />
+            <Tile
+              title="Real Time Monitoring"
+              text="Lenders risk fraud relying on agencies for collateral reports; our AI solution offers real-time monitoring, reducing the risk."
+              image="/assets/chart.webp" place="items-end justify-end" imageClass="w-[187px]" />
+            <Tile title="Social impact" text={loanCopy} image="/assets/people.webp" imageClass="w-[268px]" />
             <Tile
               className="min-h-[360px] sm:col-span-2 lg:min-h-0"
               textClass="sm:ml-[calc(50%+32px)]"
               title="Low interest rates"
               text="Secure affordable loans with our platform's low interest rates, designed to make your financial journey smooth and stress free."
               image="/assets/percent.webp"
-              imageClass="bottom-0 left-0 w-[467px] max-w-[80%] sm:max-w-[56%]"
+              pinned
+              imageClass="bottom-6 left-1/2 w-[467px] max-w-[80%] -translate-x-1/2 sm:left-1/4 sm:max-w-[42%]"
             />
           </div>
         </div>
