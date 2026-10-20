@@ -49,7 +49,7 @@ textarea {
 
 @media (min-width: 1024px) {
   .frame {
-    width: min(1600px, calc(100% - 10vw));
+    width: min(1600px, calc(100% - 80px));
   }
 }
 
@@ -116,6 +116,20 @@ textarea {
 
 .rules::after {
   bottom: 0;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
 }
 
 @keyframes grow {

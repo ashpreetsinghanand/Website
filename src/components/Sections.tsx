@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import {
   capabilities,
   faqs,
@@ -12,7 +12,7 @@ import {
   workflow,
 } from '../data/content.ts'
 import { HeroArt, LayersMark } from './Art.tsx'
-import { Eyebrow, draftMail, useUi } from './Chrome.tsx'
+import { Eyebrow, GetInTouchForm, useUi } from './Chrome.tsx'
 import { CutButton, MaskLine, Reveal, ScrollText } from './motion.tsx'
 
 /* ---------- small shared pieces ---------- */
@@ -136,7 +136,7 @@ export function Hero() {
           </div>
 
           <div className="dots hidden items-center px-6 [--dot:rgb(204_189_159/0.1)] lg:flex">
-            <HeroArt />
+            <HeroArt active={open} onPick={setOpen} />
           </div>
         </div>
       </div>
@@ -519,20 +519,7 @@ export function Faq() {
 
 /* ---------- contact ---------- */
 
-function FormField({ label, name, type = 'text' }: { label: string; name: string; type?: string }) {
-  return (
-    <label className="block text-[18px] leading-7 text-ink/80">
-      {label}
-      <input required name={name} type={type} className="mt-1 block h-[50px] w-full rounded-[4px] border border-ink/30 bg-transparent px-3 text-[16px] text-ink outline-none focus:border-leaf" />
-    </label>
-  )
-}
-
 export function Contact() {
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    draftMail(event.currentTarget, 'Enquiry from krsi website')
-  }
   return (
     <section id="contact" className="rules scroll-mt-[60px]">
       <div className="cut bg-paper px-5 pt-9 pb-9 text-ink lg:px-9">
@@ -550,22 +537,7 @@ export function Contact() {
               <p className="mt-6 max-w-[260px] text-[14px] leading-5 text-ink/80">If you handle storage, finance, or trade at scale, or need a custom setup, our team can help.</p>
             </div>
           </div>
-          <form onSubmit={submit} className="border border-ink/25 p-[18px] lg:mt-[38px]">
-            <h3 className="text-[clamp(34px,2.3vw,44px)] leading-[1.1] tracking-[-0.02em]">Get in touch</h3>
-            <p className="mt-1 text-[18px] leading-7 text-ink/80">Tell us how we can help.</p>
-            <div className="mt-9 space-y-[14px]">
-              <FormField label="Full Name" name="name" />
-              <FormField label="Work Email" name="email" type="email" />
-              <FormField label="Company or Organization Name" name="organization" />
-              <label className="block text-[18px] leading-7 text-ink/80">
-                Message
-                <textarea name="message" rows={3} className="mt-1 block w-full resize-none rounded-[4px] border border-ink/30 bg-transparent px-3 py-2 text-[16px] text-ink outline-none focus:border-leaf" />
-              </label>
-            </div>
-            <CutButton type="submit" tone="soft" shape="cut-diag" className="mt-5 h-[50px] w-full">
-              Send a message
-            </CutButton>
-          </form>
+          <GetInTouchForm subject="Enquiry from krsi website" className="lg:mt-[38px]" />
         </div>
       </div>
     </section>

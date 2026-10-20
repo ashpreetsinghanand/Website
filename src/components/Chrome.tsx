@@ -54,7 +54,7 @@ export function UiProvider({ children }: { children: ReactNode }) {
 export function Header() {
   const { openBook } = useUi()
   return (
-    <header className="fixed inset-x-0 top-0 z-40 h-[60px] bg-[rgb(36_36_36/0.8)] backdrop-blur-md">
+    <header className="fixed inset-x-0 top-0 z-40 h-[60px] border-b border-line bg-[rgb(36_36_36/0.8)] backdrop-blur-md">
       <div className="frame grid h-full grid-cols-[120px_1fr] grid-rows-[60px] gap-x-10 lg:grid-cols-[180px_1fr]">
         <a href="#top" aria-label="Krsi home" className="cut-b relative grid h-[76px] place-items-start justify-center bg-leaf pt-4 lg:pt-5">
           <LogoMark className="size-7" />
@@ -240,7 +240,7 @@ function Overlay({ children, onClose, label }: { children: ReactNode; onClose: (
         role="dialog"
         aria-modal="true"
         aria-label={label}
-        className="cut max-h-[90vh] w-full max-w-[560px] overflow-auto bg-paper p-8 text-ink"
+        className="cut max-h-[90vh] w-full max-w-[640px] overflow-auto bg-paper p-6 text-ink"
         onClick={(event) => event.stopPropagation()}
       >
         {children}
@@ -257,54 +257,50 @@ export function draftMail(form: HTMLFormElement, subject: string) {
 }
 
 function BookModal({ onClose }: { onClose: () => void }) {
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    draftMail(event.currentTarget, 'Book a call with Krsi')
-  }
-
   return (
     <Overlay onClose={onClose} label="Book a call">
-      <div className="flex items-start justify-between gap-4">
-        <h2 className="text-[36px] leading-none tracking-[-0.04em]">Book a call</h2>
+      <div className="mb-3 flex justify-end">
         <button type="button" onClick={onClose} className="cursor-pointer font-mono text-[14px]" aria-label="Close">
           Close
         </button>
       </div>
-      <form onSubmit={submit} className="mt-6 space-y-3">
-        <ContactFields />
-        <CutButton type="submit" className="mt-2 h-[53px] w-full">
-          Send request
-        </CutButton>
-      </form>
+      <GetInTouchForm title="Book a call" subject="Book a call with Krsi" />
     </Overlay>
   )
 }
 
-export function ContactFields() {
+function FormField({ label, name, type = 'text' }: { label: string; name: string; type?: string }) {
   return (
-    <>
-      <Field name="name" label="Name" />
-      <Field name="organization" label="Organization" />
-      <Field name="phone" label="Phone" type="tel" />
-      <label className="block font-mono text-[13px] text-ink/70">
-        You operate as
-        <select name="role" defaultValue="Warehouse" className="mt-2 h-11 w-full border border-ink/15 bg-white/70 px-3 font-sans text-[14px] text-ink">
-          <option>Farmer</option>
-          <option>Warehouse</option>
-          <option>Lender</option>
-          <option>Trader</option>
-        </select>
-      </label>
-    </>
+    <label className="block text-[18px] leading-7 text-ink/80">
+      {label}
+      <input required name={name} type={type} className="mt-1 block h-[50px] w-full rounded-[4px] border border-ink/30 bg-transparent px-3 text-[16px] text-ink outline-none focus:border-leaf" />
+    </label>
   )
 }
 
-function Field({ name, label, type = 'text' }: { name: string; label: string; type?: string }) {
+/** The bordered "Get in touch" form, shared by the Contact section and the Book a call dialog. */
+export function GetInTouchForm({ title = 'Get in touch', subject, className = '' }: { title?: string; subject: string; className?: string }) {
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    draftMail(event.currentTarget, subject)
+  }
   return (
-    <label className="block font-mono text-[13px] text-ink/70">
-      {label}
-      <input required name={name} type={type} className="mt-2 h-11 w-full border border-ink/15 bg-white/70 px-3 font-sans text-[14px] text-ink outline-none focus:border-leaf" />
-    </label>
+    <form onSubmit={submit} className={`border border-ink/25 p-[18px] text-ink ${className}`}>
+      <h3 className="text-[clamp(34px,2.3vw,44px)] leading-[1.1] tracking-[-0.02em]">{title}</h3>
+      <p className="mt-1 text-[18px] leading-7 text-ink/80">Tell us how we can help.</p>
+      <div className="mt-9 space-y-[14px]">
+        <FormField label="Full Name" name="name" />
+        <FormField label="Work Email" name="email" type="email" />
+        <FormField label="Company or Organization Name" name="organization" />
+        <label className="block text-[18px] leading-7 text-ink/80">
+          Message
+          <textarea name="message" rows={3} className="mt-1 block w-full resize-none rounded-[4px] border border-ink/30 bg-transparent px-3 py-2 text-[16px] text-ink outline-none focus:border-leaf" />
+        </label>
+      </div>
+      <CutButton type="submit" tone="soft" shape="cut-diag" className="mt-5 h-[50px] w-full">
+        Send a message
+      </CutButton>
+    </form>
   )
 }
 

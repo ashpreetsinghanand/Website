@@ -1,79 +1,143 @@
+import type { ReactNode } from 'react'
+
 const SAND = '#d1c2a5'
 const TAN = '#e3d8c5'
-const DARK = '#262626'
+const FACE = '#2c2c2c'
+const SIDE = '#202020'
+const SHADE = '#1a1a1a'
+const CX = 335
 
 const rhombus = (cx: number, cy: number, w: number, h: number) =>
   `${cx},${cy - h / 2} ${cx + w / 2},${cy} ${cx},${cy + h / 2} ${cx - w / 2},${cy}`
 
-function Plate({ cy }: { cy: number }) {
+/** Isometric box; `cy` is the centre of the top face. */
+function Box({ cy, w, h, d, top }: { cy: number; w: number; h: number; d: number; top: string }) {
+  const l = CX - w / 2
+  const r = CX + w / 2
   return (
-    <g>
-      <polygon points={rhombus(335, cy, 426, 246)} fill="none" stroke={SAND} strokeOpacity="0.28" />
-      <polygon points={rhombus(335, cy, 240, 138)} fill="none" stroke={SAND} strokeOpacity="0.18" strokeDasharray="3 5" />
-    </g>
+    <>
+      <polygon points={`${l},${cy} ${CX},${cy + h / 2} ${CX},${cy + h / 2 + d} ${l},${cy + d}`} fill={SIDE} />
+      <polygon points={`${CX},${cy + h / 2} ${r},${cy} ${r},${cy + d} ${CX},${cy + h / 2 + d}`} fill={SHADE} />
+      <polygon points={rhombus(CX, cy, w, h)} fill={top} />
+    </>
   )
 }
 
-/** Isometric box: top face, left face, right face. */
-function Block({ cy, w, h, depth, light = 'top' }: { cy: number; w: number; h: number; depth: number; light?: 'top' | 'left' }) {
-  const top = rhombus(335, cy, w, h)
-  const left = `${335 - w / 2},${cy} ${335},${cy + h / 2} ${335},${cy + h / 2 + depth} ${335 - w / 2},${cy + depth}`
-  const right = `${335},${cy + h / 2} ${335 + w / 2},${cy} ${335 + w / 2},${cy + depth} ${335},${cy + h / 2 + depth}`
+/** Vertical cylinder; `y` is the centre of the top ellipse. */
+function Cylinder({ y, rx, ry, h, top }: { y: number; rx: number; ry: number; h: number; top: string }) {
   return (
-    <g stroke={SAND} strokeWidth="1" strokeLinejoin="round">
-      <polygon points={left} fill={light === 'left' ? TAN : DARK} />
-      <polygon points={right} fill={DARK} />
-      <polygon points={top} fill={light === 'top' ? TAN : DARK} />
-    </g>
+    <>
+      <path d={`M${CX - rx},${y} v${h} a${rx},${ry} 0 0 0 ${rx * 2},0 v${-h} Z`} fill={SIDE} />
+      <ellipse cx={CX} cy={y} rx={rx} ry={ry} fill={top} />
+    </>
   )
 }
 
-function Label({ y, text }: { y: number; text: string }) {
+function hexPrism(cy: number, top: string) {
+  const R = 78
+  const r = 42
+  const d = 28
+  const v = Array.from({ length: 6 }, (_, k) => [CX + R * Math.cos((k * Math.PI) / 3), cy + r * Math.sin((k * Math.PI) / 3)])
+  const sides = v
+    .map((a, k) => {
+      const b = v[(k + 1) % 6]
+      return { mid: (a[1] + b[1]) / 2, pts: `${a[0]},${a[1]} ${b[0]},${b[1]} ${b[0]},${b[1] + d} ${a[0]},${a[1] + d}` }
+    })
+    .sort((m, n) => m.mid - n.mid)
   return (
-    <g>
-      <circle cx="335" cy={y} r="3.5" fill={TAN} />
-      <line x1="338" y1={y} x2="499" y2={y} stroke={TAN} />
-      <circle cx="502" cy={y} r="3.5" fill={TAN} />
-      <text x="516" y={y + 5} fill="#f0e7da" fontFamily="IBM Plex Mono, monospace" fontSize="14">
-        {text}
-      </text>
-    </g>
-  )
-}
-
-/** Right-hand hero column: the Krsi layers drawn as stacked isometric plates. */
-export function HeroArt() {
-  return (
-    <svg viewBox="0 0 670 1000" className="h-auto w-full" role="img" aria-label="Krsi infrastructure layers: origination, tokenization, oracle and data, analysis">
-      <line x1="335" y1="40" x2="335" y2="960" stroke={SAND} strokeOpacity="0.35" />
-      <circle cx="335" cy="40" r="3.5" fill={TAN} />
-      <circle cx="335" cy="960" r="3.5" fill={TAN} />
-
-      <Plate cy={180} />
-      <g stroke={SAND} strokeLinejoin="round">
-        <polygon points="335,70 400,150 335,186" fill={TAN} />
-        <polygon points="335,70 270,150 335,186" fill={DARK} />
-        <polygon points="270,150 335,186 400,150 335,118" fill="none" strokeOpacity="0.5" />
-      </g>
-      <Label y={150} text="ORIGINATION" />
-
-      <Plate cy={400} />
-      <Block cy={346} w={150} h={86} depth={70} light="left" />
-      <Label y={360} text="TOKENIZATION" />
-
-      <Plate cy={620} />
-      {[512, 548, 584].map((cy) => (
-        <Block key={cy} cy={cy} w={170} h={98} depth={18} />
+    <>
+      {sides.map((side) => (
+        <polygon key={side.pts} points={side.pts} fill={SIDE} />
       ))}
-      <Label y={590} text="ORACLE & DATA" />
+      <polygon points={v.map((p) => p.join(',')).join(' ')} fill={top} />
+      <ellipse cx={CX} cy={cy} rx={26} ry={14} fill={SHADE} />
+    </>
+  )
+}
 
-      <Plate cy={840} />
-      <g stroke={SAND}>
-        <path d="M245,790 v40 a90,52 0 0 0 180,0 v-40" fill={DARK} />
-        <ellipse cx="335" cy="790" rx="90" ry="52" fill={TAN} />
-        <ellipse cx="335" cy="790" rx="34" ry="20" fill={DARK} />
-      </g>
-      <Label y={820} text="ANALYZE" />
+/** One shape per Krsi layer, drawn around the layer's centre line `cy`. */
+const shapes: ((cy: number, top: string) => ReactNode)[] = [
+  // Asset origination: inverted pyramid
+  (cy, top) => (
+    <>
+      <polygon points={`${CX - 65},${cy - 20} ${CX},${cy + 12} ${CX},${cy + 64}`} fill={SIDE} />
+      <polygon points={`${CX},${cy + 12} ${CX + 65},${cy - 20} ${CX},${cy + 64}`} fill={SHADE} />
+      <polygon points={rhombus(CX, cy - 20, 130, 64)} fill={top} />
+    </>
+  ),
+  // Tokenization: cube
+  (cy, top) => <Box cy={cy - 36} w={116} h={66} d={62} top={top} />,
+  // Oracle & data: hemisphere
+  (cy, top) => (
+    <>
+      <path d={`M${CX - 72},${cy - 14} a72,72 0 0 0 144,0 Z`} fill={SIDE} />
+      <ellipse cx={CX} cy={cy - 14} rx={72} ry={38} fill={top} />
+      <ellipse cx={CX} cy={cy - 14} rx={28} ry={15} fill={SHADE} />
+    </>
+  ),
+  // Credit: stacked coins
+  (cy, top) => (
+    <>
+      <Cylinder y={cy + 22} rx={60} ry={30} h={14} top={FACE} />
+      <Cylinder y={cy + 4} rx={60} ry={30} h={14} top={FACE} />
+      <Cylinder y={cy - 14} rx={60} ry={30} h={14} top={top} />
+    </>
+  ),
+  // Liquidation: hexagonal prism with a hole
+  (cy, top) => hexPrism(cy - 14, top),
+  // Settlement: stepped plates
+  (cy, top) => (
+    <>
+      <Box cy={cy + 22} w={156} h={90} d={12} top={FACE} />
+      <Box cy={cy} w={118} h={68} d={12} top={FACE} />
+      <Box cy={cy - 22} w={80} h={46} d={12} top={top} />
+    </>
+  ),
+  // Governance & treasury: column on a base
+  (cy, top) => (
+    <>
+      <Cylinder y={cy + 30} rx={64} ry={33} h={12} top={FACE} />
+      <Cylinder y={cy - 34} rx={34} ry={18} h={64} top={top} />
+    </>
+  ),
+]
+
+const labels = ['ORIGINATION', 'TOKENIZATION', 'ORACLE & DATA', 'CREDIT', 'LIQUIDATION', 'SETTLEMENT', 'GOVERNANCE']
+const FIRST = 110
+const STEP = 150
+
+/** Right-hand hero column: the seven Krsi layers as stacked isometric plates. Clicking a shape opens its layer. */
+export function HeroArt({ active = -1, onPick }: { active?: number; onPick?: (index: number) => void }) {
+  const last = FIRST + STEP * (labels.length - 1)
+  return (
+    <svg viewBox={`0 0 670 ${last + 150}`} className="h-auto w-full" role="img" aria-label="The seven Krsi layers, from origination to governance">
+      <line x1={CX} y1="24" x2={CX} y2={last + 120} stroke={SAND} strokeOpacity="0.35" />
+      <circle cx={CX} cy="24" r="3.5" fill={TAN} />
+      <circle cx={CX} cy={last + 120} r="3.5" fill={TAN} />
+      {labels.map((label, index) => {
+        const cy = FIRST + index * STEP
+        const on = index === active
+        return (
+          <g key={label} onClick={() => onPick?.(index)} className={onPick ? 'cursor-pointer' : ''}>
+            <polygon points={rhombus(CX, cy + 40, 380, 216)} fill="none" stroke={SAND} strokeOpacity={on ? 0.55 : 0.22} className="transition-[stroke-opacity] duration-500" />
+            <g
+              className="float"
+              style={{ animationDelay: `${-index * 0.85}s` }}
+              stroke={on ? '#f0e7da' : SAND}
+              strokeOpacity={on ? 1 : 0.65}
+              strokeLinejoin="round"
+            >
+              {shapes[index](cy, on ? TAN : FACE)}
+            </g>
+            <circle cx={CX} cy={cy} r="3.5" fill={TAN} />
+            <line x1={CX + 3} y1={cy} x2="499" y2={cy} stroke={TAN} strokeOpacity={on ? 1 : 0.7} />
+            <circle cx="502" cy={cy} r="3.5" fill={TAN} />
+            <text x="516" y={cy + 5} fill={on ? '#f0e7da' : SAND} fontFamily="IBM Plex Mono, monospace" fontSize="14">
+              {label}
+            </text>
+          </g>
+        )
+      })}
     </svg>
   )
 }
