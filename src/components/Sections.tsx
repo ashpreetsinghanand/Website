@@ -75,12 +75,12 @@ export function Hero() {
   return (
     <section id="top" className="rules rules-full">
       <div className="frame grid lg:grid-cols-[180px_1fr] lg:gap-x-10">
-        <aside className="hidden flex-col border-x border-line pt-[60px] lg:flex">
-          <div className="flex-1" />
-          <p className="pb-[52px] text-center font-mono text-[14px] leading-[21px] text-sand">Incubated By:</p>
+        {/* top padding = everything above the hero's "Empowering farmers" line (each h1 line is 1.06em tall), so the label starts level with it */}
+        <aside className="hidden flex-col border-x border-line pt-[calc(189px+4.24*clamp(52px,4.17vw,80px))] lg:flex">
+          <p className="pb-6 text-center font-mono text-[14px] leading-[21px] text-sand">Incubated By:</p>
           {incubators.map((incubator) => (
-            <div key={incubator.name} className="grid h-[140px] place-items-center border-t border-line px-6">
-              <img src={incubator.logo} alt={incubator.name} className="max-h-[72px] max-w-[110px] object-contain" />
+            <div key={incubator.name} className="grid min-h-[140px] flex-1 place-items-center border-t border-line px-5 py-4">
+              <img src={incubator.logo} alt={incubator.name} className="max-h-[132px] w-full max-w-[140px] object-contain" />
             </div>
           ))}
         </aside>

@@ -217,23 +217,13 @@ export function HeroArt({ active = -1, onPick }: { active?: number; onPick?: (in
   )
 }
 
-export function LogoMark({ className = '' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 28 28" className={className} aria-hidden="true">
-      <rect width="28" height="28" fill="#121212" />
-      <path d="M14 6 22 14 14 22 6 14Z" fill="#f0e7da" />
-      <path d="M14 10.5 17.5 14 14 17.5 10.5 14Z" fill="#121212" />
-    </svg>
-  )
-}
-
 /** Oversized dotted wordmark used in the footer card. */
 export function Wordmark() {
   return (
     <svg viewBox="0 0 1380 306" className="h-full w-full" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
       <defs>
         <pattern id="wordmark-dots" width="6" height="6" patternUnits="userSpaceOnUse">
-          <circle cx="3" cy="3" r="1.4" fill="#0f2f20" />
+          <circle cx="3" cy="3" r="1.4" fill="#1d1d1d" />
         </pattern>
       </defs>
       <text x="690" y="392" textAnchor="middle" fontFamily="Geist, sans-serif" fontWeight="600" fontSize="460" letterSpacing="-24" fill="url(#wordmark-dots)">

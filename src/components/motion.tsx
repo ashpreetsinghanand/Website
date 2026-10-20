@@ -107,8 +107,8 @@ export function CutButton({
   shape?: 'cut' | 'cut-sm' | 'cut-diag' | ''
 }) {
   const colors = {
-    leaf: 'bg-leaf text-cream hover:bg-[#23995f]',
-    soft: 'bg-leaf/65 text-paper hover:bg-leaf',
+    leaf: 'bg-leaf text-ink hover:bg-[#a6fa62]',
+    soft: 'bg-leaf/80 text-ink hover:bg-leaf',
     tan: 'bg-tan text-ink hover:bg-[#ece2d1]',
   }[tone]
   const classes = `${shape} group inline-flex cursor-pointer items-center justify-center px-8 text-[14px] leading-[21px] font-bold uppercase transition-colors duration-300 ${colors} ${className}`

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Measured from the Dispatch reference at 1920px; accent swapped to Krsi green. */
+/* Measured from the Dispatch reference at 1920px; accent swapped to Krsi lime (#92F740), which takes dark text. */
 @theme {
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -13,8 +13,7 @@
   --color-paper: #f0e8da;
   --color-tan: #e3d8c5;
   --color-ink: #1d1d1d;
-  --color-leaf: #1f8955;
-  --color-forest: #1b5e3f;
+  --color-leaf: #92f740;
 }
 
 html {
@@ -38,7 +37,7 @@ textarea {
 
 ::selection {
   background: var(--color-leaf);
-  color: #fff;
+  color: var(--color-ink);
 }
 
 /* 1600px container with 160px gutters at 1920, matching the reference grid. */

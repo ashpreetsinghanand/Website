@@ -163,8 +163,8 @@ export const footerPages = [
 export const socials: { label: string; href: string }[] = []
 
 export const incubators = [
-  { name: 'NITI Aayog', logo: '/assets/incubators/niti-aayog.webp' },
-  { name: 'Atal Innovation Mission', logo: '/assets/incubators/aim.webp' },
-  { name: 'Coffee Board', logo: '/assets/incubators/coffee-board.webp' },
-  { name: 'AIC CCRI CED', logo: '/assets/incubators/aic-ccri.webp' },
+  { name: 'NITI Aayog', logo: '/assets/incubators/niti-aayog.png' },
+  { name: 'Atal Innovation Mission', logo: '/assets/incubators/aim.png' },
+  { name: 'Coffee Board', logo: '/assets/incubators/coffee-board.png' },
+  { name: 'AIC CCRI CED', logo: '/assets/incubators/aic-ccri.png' },
 ]
