@@ -53,7 +53,7 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 h-[60px] border-b border-line bg-[rgb(36_36_36/0.8)] backdrop-blur-md">
       <div className="frame grid h-full grid-cols-[120px_1fr] grid-rows-[60px] gap-x-10 lg:grid-cols-[180px_1fr]">
-        <a href="#top" className="flex items-center">
+        <a href="#top" className="flex items-center lg:justify-center">
           <img src="/assets/krsi-logo.png" alt="Krsi home" className="h-6 w-auto lg:h-8" />
         </a>
         <div className="flex items-center justify-end lg:grid lg:grid-cols-2 lg:gap-x-10">
@@ -167,7 +167,7 @@ export function Footer() {
       <div className="frame grid gap-y-4 lg:grid-cols-[180px_1fr]">
         <div className="cut relative hidden min-h-[445px] place-items-center bg-leaf lg:grid">
           <span className="hatch absolute inset-0 [--hatch:rgb(28_28_28/0.25)]" />
-          <img src="/assets/krsi-mark.png" alt="" className="relative size-[88px] brightness-0" />
+          <img src="/assets/krsi-mark.png" alt="" className="relative size-12 brightness-0" />
         </div>
         <div className="cut relative flex min-h-[445px] flex-col overflow-hidden bg-leaf text-ink">
           <div className="grid gap-8 px-9 pt-10 pb-6 lg:grid-cols-2 lg:gap-10">
