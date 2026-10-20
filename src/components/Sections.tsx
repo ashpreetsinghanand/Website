@@ -72,7 +72,7 @@ export function Hero() {
   const [open, setOpen] = useState(0)
 
   return (
-    <section id="top" className="rules">
+    <section id="top" className="rules rules-full">
       <div className="frame grid lg:grid-cols-[180px_1fr] lg:gap-x-10">
         <aside className="hidden flex-col border-x border-line pt-[60px] lg:flex">
           <div className="flex-1" />

@@ -94,20 +94,36 @@ textarea {
   background-position: center;
 }
 
-/* Full-bleed horizontal rules at the top and bottom of a block. */
+/* Horizontal rules at the top and bottom of a block. */
 .rules {
   position: relative;
 }
 
+/* Horizontal rules stop at the page frame, never in the outer margins (as in Dispatch). */
 .rules::before,
 .rules::after {
   content: "";
   position: absolute;
-  left: -100vw;
-  right: -100vw;
+  left: 0;
+  right: 0;
   height: 1px;
   background: var(--color-line);
   pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  /* content-column blocks reach back across the 180px rail and 40px gap to the frame edge */
+  .rules::before,
+  .rules::after {
+    left: -220px;
+  }
+
+  /* full-width blocks inset to the frame */
+  .rules-full::before,
+  .rules-full::after {
+    left: max(40px, calc((100% - 1600px) / 2));
+    right: max(40px, calc((100% - 1600px) / 2));
+  }
 }
 
 .rules::before {
@@ -116,20 +132,6 @@ textarea {
 
 .rules::after {
   bottom: 0;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-.float {
-  animation: float 6s ease-in-out infinite;
 }
 
 @keyframes grow {

@@ -88,7 +88,7 @@ export function Header() {
 /** Sticky numbered index on the left of the long content column. */
 export function Rail() {
   return (
-    <nav aria-label="Sections" className="sticky top-[60px] pt-[81px]">
+    <nav aria-label="Sections" className="sticky top-[60px] z-10 bg-bg pt-[81px]">
       <ol>
         {rail.map((item, index) => (
           <RailItem key={item.id} id={item.id} index={index} label={item.label} />
