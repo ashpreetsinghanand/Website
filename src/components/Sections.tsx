@@ -80,16 +80,7 @@ export function Hero() {
           <p className="pb-[52px] text-center font-mono text-[14px] leading-[21px] text-sand">Incubated By:</p>
           {incubators.map((incubator) => (
             <div key={incubator.name} className="grid h-[140px] place-items-center border-t border-line px-6">
-              {incubator.logo ? (
-                <img
-                  src={incubator.logo}
-                  alt={incubator.name}
-                  className="max-h-[72px] max-w-[110px] object-contain"
-                />
-              ) : (
-                // shortcut: placeholder mark until the logo file arrives; set `logo` in content.ts
-                <span role="img" aria-label={incubator.name} className="hatch h-4 w-10 text-tan opacity-50 [--hatch:currentColor]" />
-              )}
+              <img src={incubator.logo} alt={incubator.name} className="max-h-[72px] max-w-[110px] object-contain" />
             </div>
           ))}
         </aside>

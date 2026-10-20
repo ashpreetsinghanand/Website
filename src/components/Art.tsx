@@ -130,7 +130,7 @@ const PLATE_H = PLATE_W * 0.577
 // As in Dispatch, every label point sits on the bottom corner of the sheet above its shape.
 const TOP_DOT = 20
 const FIRST = 235
-const STEM = 65
+const STEM = 14
 const CORNER = 18
 // a rounded corner's tip sits half the corner's vertical cut above the sharp vertex
 const LIFT = STEP - PLATE_H / 2 + (CORNER * (PLATE_H / 2)) / Math.hypot(PLATE_W / 2, PLATE_H / 2) / 2
