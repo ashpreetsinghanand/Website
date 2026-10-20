@@ -1,6 +1,6 @@
 import { Footer, Header, Rail, UiProvider } from './components/Chrome.tsx'
 import { SmoothScroll } from './components/motion.tsx'
-import { Capabilities, Contact, Faq, Features, Hero, Insights, Integrations, Intro, Systems } from './components/Sections.tsx'
+import { Capabilities, Contact, Faq, Features, Hero, Insights, Intro, Systems } from './components/Sections.tsx'
 
 export function App() {
   return (
@@ -19,7 +19,6 @@ export function App() {
               <Capabilities />
               <Systems />
               <Features />
-              <Integrations />
               <Insights />
               <Faq />
               <Contact />

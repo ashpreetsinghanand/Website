@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import {
   capabilities,
   faqs,
+  incubators,
   integrationGroups,
   integrationTraits,
   layers,
@@ -77,17 +78,25 @@ export function Hero() {
         <aside className="hidden flex-col border-x border-line pt-[60px] lg:flex">
           <div className="flex-1" />
           <p className="pb-[52px] text-center font-mono text-[14px] leading-[21px] text-sand">Incubated By:</p>
-          {/* shortcut: these marks come from the Figma rail; swap in real incubator logos when you have them. */}
-          {[0, 1, 2].map((mark) => (
-            <div key={mark} className="grid h-[158px] place-items-center border-t border-line text-tan opacity-50">
-              {mark === 0 ? <span className="hatch h-4 w-10 [--hatch:currentColor]" /> : <LayersMark className="h-9 w-10" />}
+          {incubators.map((incubator) => (
+            <div key={incubator.name} className="grid h-[140px] place-items-center border-t border-line px-6">
+              {incubator.logo ? (
+                <img
+                  src={incubator.logo}
+                  alt={incubator.name}
+                  className="max-h-[72px] max-w-[110px] object-contain"
+                />
+              ) : (
+                // shortcut: placeholder mark until the logo file arrives; set `logo` in content.ts
+                <span role="img" aria-label={incubator.name} className="hatch h-4 w-10 text-tan opacity-50 [--hatch:currentColor]" />
+              )}
             </div>
           ))}
         </aside>
 
         <div className="grid border-x border-line pt-[60px] lg:grid-cols-2 lg:gap-x-10">
           <div className="border-line px-5 pt-9 pb-9 lg:border-r lg:pl-9 lg:pr-9">
-            <Eyebrow label="AI Support, automated" tone="sand" />
+            <Eyebrow label="Transforming Agriculture. Connecting Global Markets." tone="sand" />
             <h1 className="mt-7 text-[clamp(52px,4.17vw,80px)] leading-none tracking-[-0.05em]">
               <MaskLine className="text-sand">Infra Layer</MaskLine>
               <MaskLine className="text-sand" delay={0.08}>for Global</MaskLine>
@@ -161,7 +170,7 @@ const groupIcons = ['user', 'house', 'coin', 'swap'] as const
 export function Intro() {
   const { openVideo } = useUi()
   return (
-    <section id="about" className="scroll-mt-[60px] bg-deep">
+    <section className="bg-deep">
       <div className="frame grid lg:grid-cols-[180px_1fr] lg:gap-x-10">
         <div className="hidden border-x border-line lg:block" />
         <div className="border-x border-line py-20">
@@ -179,9 +188,9 @@ export function Intro() {
               </button>
             </div>
 
-            <div className="mt-[104px] grid gap-12 lg:grid-cols-[630fr_638fr] lg:gap-10">
+            <div id="about" className="mt-[104px] grid scroll-mt-[60px] gap-12 lg:grid-cols-[630fr_638fr] lg:gap-10">
               <div className="flex flex-col justify-between gap-[60px]">
-                <Eyebrow label="Overview" tone="sand" />
+                <Eyebrow label="About" tone="sand" />
                 <div className="space-y-10">
                   {overview.map((paragraph) => (
                     <ScrollText key={paragraph} words={toWords(paragraph)} className="text-[clamp(24px,1.67vw,32px)] leading-[1.25] tracking-[-0.03em]" />
@@ -217,12 +226,12 @@ export function Intro() {
               </Reveal>
             </div>
 
-            <div className="mt-20 grid gap-10 border-t border-line pt-16 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-20 grid gap-x-3 gap-y-10 border-t border-line pt-16 sm:grid-cols-2 min-[90rem]:grid-cols-4">
               {pillars.map((pillar, index) => (
                 <Reveal key={pillar.title} delay={index * 0.06}>
-                  <img src={`/assets/icons/${pillarIcons[index]}.webp`} alt="" width="24" height="24" className="size-6" />
+                  <img src={`/assets/icons/${pillarIcons[index]}.webp`} alt="" width="40" height="40" className="size-10" />
                   <strong className="mt-[26px] block font-inter text-[14px] leading-[17px] text-cream uppercase">{pillar.title}</strong>
-                  <p className="mt-[6px] max-w-[260px] text-[14px] leading-[21px] text-sand">{pillar.detail}</p>
+                  <p className="mt-[6px] text-[14px] leading-[21px] tracking-[-0.01em] text-sand">{pillar.detail}</p>
                 </Reveal>
               ))}
             </div>
@@ -448,7 +457,6 @@ export function Integrations() {
 /* ---------- insights ---------- */
 
 export function Insights() {
-  const { openNote } = useUi()
   return (
     <section id="insights" className="rules scroll-mt-[60px] text-ink">
       <div className="cut bg-paper pb-[60px]">
@@ -462,16 +470,16 @@ export function Insights() {
       <div className="mt-px grid gap-px lg:grid-cols-3">
         {notes.map((note, index) => (
           <Reveal key={note.title} delay={index * 0.08}>
-            <button type="button" onClick={() => openNote(index)} className="cut group flex h-full w-full cursor-pointer flex-col bg-paper px-5 pt-9 pb-9 text-left lg:px-9">
-              <span className="hatch grid aspect-[387/290] w-full place-items-center overflow-hidden bg-tan [--hatch:rgb(29_29_29/0.1)]">
-                <img src={note.image} alt="" className="w-[80%] object-contain transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105" />
+            <a href={note.href} target="_blank" rel="noopener noreferrer" className="cut group flex h-full w-full flex-col bg-paper px-5 pt-9 pb-9 text-left lg:px-9">
+              <span className="block aspect-video w-full overflow-hidden bg-deep">
+                <img src={note.image} alt="" className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105" />
               </span>
               <span className="mt-6 text-[24px] leading-[32.4px] tracking-[-0.02em]">{note.title}</span>
               <span className="mt-auto flex items-center justify-between pt-[71px] text-[14px] leading-[21px]">
                 <span>{note.tag}</span>
                 <time className="text-ink/80">{note.date}</time>
               </span>
-            </button>
+            </a>
           </Reveal>
         ))}
       </div>

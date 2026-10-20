@@ -1,13 +1,12 @@
 import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { motion, useScroll } from 'framer-motion'
-import { contactEmail, footerPages, layers, nav, notes, rail, socials } from '../data/content.ts'
+import { contactEmail, footerPages, layers, nav, rail, socials } from '../data/content.ts'
 import { LogoMark, Wordmark } from './Art.tsx'
 import { CutButton } from './motion.tsx'
 
 type Ui = {
   openBook: () => void
   openVideo: () => void
-  openNote: (index: number) => void
 }
 
 const UiContext = createContext<Ui | null>(null)
@@ -21,33 +20,30 @@ export function useUi() {
 export function UiProvider({ children }: { children: ReactNode }) {
   const [bookOpen, setBookOpen] = useState(false)
   const [videoOpen, setVideoOpen] = useState(false)
-  const [note, setNote] = useState<number | null>(null)
 
   useEffect(() => {
-    const open = bookOpen || videoOpen || note !== null
+    const open = bookOpen || videoOpen
     document.body.style.overflow = open ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [bookOpen, videoOpen, note])
+  }, [bookOpen, videoOpen])
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (event.key !== 'Escape') return
       setBookOpen(false)
       setVideoOpen(false)
-      setNote(null)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
   return (
-    <UiContext.Provider value={{ openBook: () => setBookOpen(true), openVideo: () => setVideoOpen(true), openNote: setNote }}>
+    <UiContext.Provider value={{ openBook: () => setBookOpen(true), openVideo: () => setVideoOpen(true) }}>
       {children}
       {bookOpen && <BookModal onClose={() => setBookOpen(false)} />}
       {videoOpen && <VideoModal onClose={() => setVideoOpen(false)} />}
-      {note !== null && <NoteModal index={note} onClose={() => setNote(null)} />}
     </UiContext.Provider>
   )
 }
@@ -352,22 +348,5 @@ function VideoModal({ onClose }: { onClose: () => void }) {
         </div>
       </div>
     </div>
-  )
-}
-
-function NoteModal({ index, onClose }: { index: number; onClose: () => void }) {
-  const note = notes[index]
-  if (!note) return null
-  return (
-    <Overlay onClose={onClose} label={note.title}>
-      <p className="font-mono text-[14px] text-ink/70">
-        {note.tag} · {note.date}
-      </p>
-      <h2 className="mt-3 text-[32px] leading-[1.1] tracking-[-0.03em]">{note.title}</h2>
-      <p className="mt-5 text-[15px] leading-7 text-ink/80">{note.body}</p>
-      <button type="button" onClick={onClose} className="mt-6 cursor-pointer font-mono text-[14px]">
-        Close
-      </button>
-    </Overlay>
   )
 }

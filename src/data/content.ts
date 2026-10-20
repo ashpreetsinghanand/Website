@@ -4,16 +4,15 @@ export const contactEmail = 'hello@krsi.in'
 export const nav = [
   { label: 'Home', href: '#top' },
   { label: 'About', href: '#about' },
-  { label: 'Solutions', href: '#systems' },
   { label: 'Blog', href: '#insights' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 export const rail = [
   { id: 'infrastructure', label: 'Infrastructure' },
   { id: 'systems', label: 'Core System' },
   { id: 'features', label: 'Features' },
-  { id: 'integrations', label: 'Integrations' },
-  { id: 'insights', label: 'Insights' },
+  { id: 'insights', label: 'Blogs' },
   { id: 'faq', label: 'FAQ' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -103,25 +102,25 @@ export const integrationTraits = ['Bidirectional', 'Secured by default', 'Contex
 
 export const notes = [
   {
-    title: 'How a warehouse receipt becomes collateral',
-    tag: 'Finance',
-    date: 'Apr 8, 2026',
-    image: '/assets/finance.webp',
-    body: 'A lot is weighed, graded, and written to a receipt before a lender prices it. The pledge uses that receipt, so credit follows the stock instead of a separate paper file.',
+    title: 'Revolutionizing warehouse receipts finance with AI, Blockchain & DePin',
+    tag: 'Medium',
+    date: 'Jun 11, 2025',
+    image: '/assets/blog/introducing-krsi.webp',
+    href: 'https://medium.com/krsi-xyz/introducing-krsi-revolutionizing-warehouse-receipts-finance-with-ai-blockchain-depin-f51ad7c5d250',
   },
   {
-    title: 'What buyers check before a bid',
-    tag: 'Trade',
-    date: 'Mar 15, 2026',
-    image: '/assets/trade.webp',
-    body: 'Quantity, grade, warehouse, and the release window. If any of those move, the listing moves with them. The bid is against a lot, not a description.',
+    title: 'What Is a Warehouse Receipt?',
+    tag: 'Medium',
+    date: 'Jun 18, 2025',
+    image: '/assets/blog/what-is-a-warehouse-receipt.webp',
+    href: 'https://medium.com/krsi-xyz/what-is-a-warehouse-receipt-its-key-features-and-functions-7654081d28aa',
   },
   {
-    title: 'Settlement without the paper chase',
-    tag: 'Updates',
-    date: 'Feb 28, 2026',
-    image: '/assets/store.webp',
-    body: 'Invoice, payment, and release stay on the same record. The warehouse sees the release. The trader sees the payment. Nobody rebuilds the file by hand.',
+    title: 'Why Farmers Are Forced to Distress Sell and How to Stop It',
+    tag: 'Medium',
+    date: 'Jun 24, 2025',
+    image: '/assets/blog/distress-selling.webp',
+    href: 'https://medium.com/krsi-xyz/why-farmers-are-forced-to-distress-sell-and-how-to-stop-it-3a558ede9f14',
   },
 ]
 
@@ -162,3 +161,10 @@ export const footerPages = [
 
 // shortcut: add real profile URLs here; the Social column renders only when this has entries.
 export const socials: { label: string; href: string }[] = []
+
+export const incubators = [
+  { name: 'NITI Aayog', logo: '' },
+  { name: 'Atal Innovation Mission', logo: '/assets/incubators/aim.webp' },
+  { name: 'Coffee Board', logo: '/assets/incubators/coffee-board.webp' },
+  { name: 'AIC CCRI CED', logo: '/assets/incubators/aic-ccri.webp' },
+]
