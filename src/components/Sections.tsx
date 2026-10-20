@@ -72,9 +72,9 @@ export function Hero() {
   const [open, setOpen] = useState(0)
 
   return (
-    <section id="top" className="rules pt-[60px]">
+    <section id="top" className="rules">
       <div className="frame grid lg:grid-cols-[180px_1fr] lg:gap-x-10">
-        <aside className="hidden flex-col border-x border-line lg:flex">
+        <aside className="hidden flex-col border-x border-line pt-[60px] lg:flex">
           <div className="flex-1" />
           <p className="pb-[52px] text-center font-mono text-[14px] leading-[21px] text-sand">Incubated By:</p>
           {/* shortcut: these marks come from the Figma rail; swap in real incubator logos when you have them. */}
@@ -85,7 +85,7 @@ export function Hero() {
           ))}
         </aside>
 
-        <div className="grid border-x border-line lg:grid-cols-2 lg:gap-x-10">
+        <div className="grid border-x border-line pt-[60px] lg:grid-cols-2 lg:gap-x-10">
           <div className="border-line px-5 pt-9 pb-9 lg:border-r lg:pl-9 lg:pr-9">
             <Eyebrow label="AI Support, automated" tone="sand" />
             <h1 className="mt-7 text-[clamp(52px,4.17vw,80px)] leading-none tracking-[-0.05em]">
@@ -161,11 +161,11 @@ const groupIcons = ['user', 'house', 'coin', 'swap'] as const
 export function Intro() {
   const { openVideo } = useUi()
   return (
-    <section id="about" className="scroll-mt-[60px] bg-deep py-20">
-      <div className="rules">
-        <div className="frame grid lg:grid-cols-[180px_1fr] lg:gap-x-10">
-          <div className="hidden border-x border-line lg:block" />
-          <div className="border-x border-line px-5 py-9 lg:px-9">
+    <section id="about" className="scroll-mt-[60px] bg-deep">
+      <div className="frame grid lg:grid-cols-[180px_1fr] lg:gap-x-10">
+        <div className="hidden border-x border-line lg:block" />
+        <div className="border-x border-line py-20">
+          <div className="rules px-5 py-9 lg:px-9">
             <div className="relative bg-deep/80 p-5 lg:p-9">
               <Corners />
               <button type="button" onClick={openVideo} aria-label="Play video" className="group relative grid aspect-[1236/695] w-full cursor-pointer place-items-center overflow-hidden bg-[#3a2f1c]">

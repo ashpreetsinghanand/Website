@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState, type FormEvent, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
+import { motion, useScroll } from 'framer-motion'
 import { contactEmail, footerPages, layers, nav, notes, rail, socials } from '../data/content.ts'
 import { LogoMark, Wordmark } from './Art.tsx'
 import { CutButton } from './motion.tsx'
@@ -86,37 +87,33 @@ export function Header() {
 
 /** Sticky numbered index on the left of the long content column. */
 export function Rail() {
-  const [active, setActive] = useState<string>(rail[0].id)
-
-  useEffect(() => {
-    const nodes = rail.map((item) => document.getElementById(item.id)).filter((node): node is HTMLElement => Boolean(node))
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.find((entry) => entry.isIntersecting)
-        if (hit) setActive(hit.target.id)
-      },
-      { rootMargin: '-45% 0px -54% 0px' },
-    )
-    nodes.forEach((node) => observer.observe(node))
-    return () => observer.disconnect()
-  }, [])
-
   return (
     <nav aria-label="Sections" className="sticky top-[60px] pt-[81px]">
-      <ol className="border-t border-line">
-        {rail.map((item, index) => {
-          const on = active === item.id
-          return (
-            <li key={item.id} className="border-b border-line">
-              <a href={`#${item.id}`} className="flex h-[37px] items-center text-[14px] leading-[21px]">
-                <span className={`w-9 pl-2 transition-colors ${on ? 'text-leaf' : 'text-sand/65'}`}>{String(index + 1).padStart(2, '0')}</span>
-                <span className={`transition-colors ${on ? 'text-cream' : 'text-sand hover:text-cream'}`}>{item.label}</span>
-              </a>
-            </li>
-          )
-        })}
+      <ol>
+        {rail.map((item, index) => (
+          <RailItem key={item.id} id={item.id} index={index} label={item.label} />
+        ))}
       </ol>
     </nav>
+  )
+}
+
+function RailItem({ id, index, label }: { id: string; index: number; label: string }) {
+  const target = useRef<HTMLElement | null>(null)
+  // set before useScroll attaches; sections are already in the DOM during layout effects
+  useLayoutEffect(() => {
+    target.current = document.getElementById(id)
+  }, [id])
+  const { scrollYProgress } = useScroll({ target, offset: ['start center', 'end center'] })
+  return (
+    <li className="relative">
+      <a href={`#${id}`} className="group flex py-2 text-[14px] leading-[21px]">
+        <span className="w-9 pl-2 text-sand/65">{String(index + 1).padStart(2, '0')}</span>
+        <span className="text-cream transition-opacity group-hover:opacity-70">{label}</span>
+      </a>
+      <span className="block h-px bg-line" />
+      <motion.span style={{ scaleX: scrollYProgress }} className="absolute bottom-0 left-0 block h-px w-full origin-left bg-sand/65" />
+    </li>
   )
 }
 
@@ -138,16 +135,18 @@ export function Eyebrow({ label, tone = 'ink' }: { label: string; tone?: 'ink' |
 export function Footer() {
   const { openBook } = useUi()
   return (
-    <footer className="bg-deep pt-20 pb-6">
+    <footer className="bg-deep pb-6">
       <div className="frame grid gap-x-10 lg:grid-cols-[180px_1fr]">
-        <a href="#top" className="hidden h-10 items-center justify-center gap-2 self-start font-mono text-[14px] text-sand lg:flex">
-          <svg width="21" height="21" viewBox="0 0 21 21" fill="none" aria-hidden="true" className="opacity-50">
-            <path d="M10.5 16V5M5.5 10l5-5 5 5" stroke="currentColor" strokeWidth="1.4" />
-          </svg>
-          Back to top
-        </a>
-        <div className="grid gap-10 lg:grid-cols-2">
-          <div className="pt-10">
+        <div className="hidden border-x border-line pt-20 pb-10 lg:block">
+          <a href="#top" className="flex h-10 items-center justify-center gap-2 font-mono text-[14px] text-sand">
+            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" aria-hidden="true" className="opacity-50">
+              <path d="M10.5 16V5M5.5 10l5-5 5 5" stroke="currentColor" strokeWidth="1.4" />
+            </svg>
+            Back to top
+          </a>
+        </div>
+        <div className="grid gap-10 pt-20 pb-10 lg:grid-cols-2 lg:border-x lg:border-line">
+          <div className="pt-10 lg:pl-9">
             <Eyebrow label="Ready to grow with Krsi" tone="sand" />
             <h2 className="mt-[33px] text-[clamp(40px,3.125vw,60px)] leading-[1.2] tracking-[-0.05em]">
               <span className="block text-cream">Store smarter.</span>
@@ -170,7 +169,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="frame mt-10 grid gap-y-4 lg:grid-cols-[180px_1fr]">
+      <div className="frame grid gap-y-4 lg:grid-cols-[180px_1fr]">
         <div className="cut relative hidden min-h-[445px] place-items-center bg-forest lg:grid">
           <span className="hatch absolute inset-0 [--hatch:rgb(28_28_28/0.55)]" />
           <LogoMark className="relative size-[72px]" />
