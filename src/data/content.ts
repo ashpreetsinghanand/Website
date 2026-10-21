@@ -159,8 +159,12 @@ export const footerPages = [
   { label: 'Contact', href: '#contact' },
 ]
 
-// shortcut: add real profile URLs here; the Social column renders only when this has entries.
-export const socials: { label: string; href: string }[] = []
+export const socials = [
+  { label: 'X (Twitter)', href: 'https://x.com/krsi_xyz', icon: '/assets/social/x.png' },
+  { label: 'Telegram', href: 'https://t.me/krsi_xyz', icon: '/assets/social/telegram.png' },
+  { label: 'Medium', href: 'https://medium.com/krsi-xyz', icon: '/assets/social/medium.png' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/krsi-xyz', icon: '/assets/social/linkedin.png' },
+]
 
 export const incubators = [
   { name: 'NITI Aayog', logo: '/assets/incubators/niti-aayog.png' },

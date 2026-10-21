@@ -156,9 +156,16 @@ export function Footer() {
           </div>
           <div className="relative min-h-[300px]">
             <div className="dots absolute inset-x-0 top-0 h-[185px] [--dot:rgb(227_216_197/0.22)]" />
-            <div className="relative grid gap-10 px-9 pt-[221px] sm:grid-cols-2">
+            <div className="relative grid h-[185px] grid-cols-4 place-items-center px-9">
+              {socials.map((social) => (
+                <a key={social.label} href={social.href} target="_blank" rel="noreferrer" aria-label={social.label} className="transition-opacity hover:opacity-75">
+                  <img src={social.icon} alt="" className="h-10 w-10 object-contain" />
+                </a>
+              ))}
+            </div>
+            <div className="relative grid gap-10 px-9 pt-9 sm:grid-cols-2">
               <LinkList title="Pages" links={footerPages} />
-              {socials.length > 0 && <LinkList title="Social" links={socials} />}
+              <LinkList title="Social" links={socials} />
             </div>
           </div>
         </div>
@@ -217,7 +224,10 @@ function LinkList({ title, links }: { title: string; links: { label: string; hre
       <ul className="mt-[26px]">
         {links.map((link, index) => (
           <li key={link.label} className={index ? 'border-t border-line' : ''}>
-            <a href={link.href} className={`block py-[9px] text-[16px] leading-[21px] transition-colors hover:text-cream ${index === 0 ? 'text-cream' : 'text-sand'}`}>
+            <a
+              href={link.href}
+              {...(link.href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
+              className={`block py-[9px] text-[16px] leading-[21px] transition-colors hover:text-cream ${index === 0 ? 'text-cream' : 'text-sand'}`}>
               {link.label}
             </a>
           </li>
