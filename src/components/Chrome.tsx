@@ -159,7 +159,7 @@ export function Footer() {
             <div className="relative grid h-[185px] grid-cols-4 place-items-center px-9">
               {socials.map((social) => (
                 <a key={social.label} href={social.href} target="_blank" rel="noreferrer" aria-label={social.label} className="transition-opacity hover:opacity-75">
-                  <img src={social.icon} alt="" className="h-10 w-10 object-contain" />
+                  <img src={social.icon} alt="" className="h-20 w-20 object-contain" />
                 </a>
               ))}
             </div>
